@@ -1,3 +1,32 @@
 <resources>
     <string name="app_name">AstroWeather</string>
+
+    <string name="sun_fragment">Hello sun!</string>
+    <string name="moon_fragment">Hello moon!</string>
+
+    <string name="time_clock">20:01:36</string>
+
+    <string name="desc_moon">Moon image</string>
+    <string name="desc_sun">Sun image</string>
+
+    <string name="sunrise">Sunrise</string>
+    <string name="sunset">Sunset</string>
+
+    <string name="moonrise">Moonrise</string>
+    <string name="sunset_of_moon">Sunset of the Moon</string>
+    <string name="new_moon">New Moon</string>
+    <string name="full_moon">Full Moon</string>
+    <string name="phase_moon">Phase of the Moon</string>
+    <string name="day_of_synodic_month">Day of the synodic month</string>
+
+    <string name="empty">Empty</string>
+    <string name="time">Time: </string>
+    <string name="day">Day: </string>
+    <string name="percentage">Percentage: </string>
+    <string name="date">Date: </string>
+    <string name="azimuth">Azimuth: </string>
+    <string name="civil_dawn">Civil dawn</string>
+    <string name="morning">Morning: </string>
+    <string name="evening">"Evening: "</string>
+
 </resources>
