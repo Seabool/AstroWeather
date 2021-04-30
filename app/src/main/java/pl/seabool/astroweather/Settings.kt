@@ -1,6 +1,5 @@
 package pl.seabool.astroweather
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -22,7 +21,7 @@ class Settings : AppCompatActivity() {
 
     @Override
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == android.R.id.home){
+        if (item.itemId == android.R.id.home) {
             super.onBackPressed()
             return true
         }

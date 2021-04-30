@@ -12,11 +12,13 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 
 class MainActivity : AppCompatActivity() {
+
+    val adapter = ViewPagerAdapter(supportFragmentManager)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val adapter = ViewPagerAdapter(supportFragmentManager)
         adapter.addFragment(SunFragment(), "Sun")
         adapter.addFragment(MoonFragment(), "Moon")
 
