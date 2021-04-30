@@ -12,20 +12,30 @@ import java.util.*
 
 class SunFragment : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_sun, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val astroCalculator = AstroCalculator(setAstroDate(), setLocation(51.759247, 19.455982))
+
+        setDataToTextViews(astroCalculator)
+    }
+
+    private fun getAstroDateTimeText(adt: AstroDateTime): String {
+        val time = StringBuilder()
+        time.append(adt.hour)
+        time.append(":")
+        time.append(adt.minute)
+        return time.toString()
+    }
+
+    private fun setAstroDate(): AstroDateTime {
         val currentTime = Calendar.getInstance()
 
         val year = currentTime.get(Calendar.YEAR)
@@ -36,27 +46,28 @@ class SunFragment : Fragment() {
         val minute = currentTime.get(Calendar.MINUTE)
         val second = currentTime.get(Calendar.SECOND)
 
-
-        val astroDateTime = AstroDateTime(year, month, day, hour, minute, second, 1, true)
-        val astroLocation = AstroCalculator.Location(51.759247, 19.455982)
-        val astroCalculator = AstroCalculator(astroDateTime, astroLocation)
-
-        getView()?.findViewById<TextView>(R.id.sunrise_time)?.text = getAstroDateTimeText(astroCalculator.sunInfo.sunrise)
-        getView()?.findViewById<TextView>(R.id.sunrise_azimuth)?.text = astroCalculator.sunInfo.azimuthRise.toString()
-
-        getView()?.findViewById<TextView>(R.id.sunset_time)?.text = getAstroDateTimeText(astroCalculator.sunInfo.sunset)
-        getView()?.findViewById<TextView>(R.id.sunset_azimuth)?.text = astroCalculator.sunInfo.azimuthSet.toString()
-
-        getView()?.findViewById<TextView>(R.id.morning_time)?.text = getAstroDateTimeText(astroCalculator.sunInfo.twilightMorning)
-        getView()?.findViewById<TextView>(R.id.evening_time)?.text = getAstroDateTimeText(astroCalculator.sunInfo.twilightEvening)
+        return AstroDateTime(year, month, day, hour, minute, second, 1, true)
     }
 
-    private fun getAstroDateTimeText(adt:AstroDateTime):String{
-        val time = StringBuilder()
-        time.append(adt.hour)
-        time.append(":")
-        time.append(adt.minute)
-        return time.toString()
+    private fun setLocation(latitude: Double, longtitude: Double): AstroCalculator.Location {
+        return AstroCalculator.Location(latitude, longtitude)
+    }
+
+    private fun setDataToTextViews(astroCalculator: AstroCalculator) {
+        view?.findViewById<TextView>(R.id.sunrise_time)?.text =
+            getAstroDateTimeText(astroCalculator.sunInfo.sunrise)
+        view?.findViewById<TextView>(R.id.sunrise_azimuth)?.text =
+            astroCalculator.sunInfo.azimuthRise.toString()
+
+        view?.findViewById<TextView>(R.id.sunset_time)?.text =
+            getAstroDateTimeText(astroCalculator.sunInfo.sunset)
+        view?.findViewById<TextView>(R.id.sunset_azimuth)?.text =
+            astroCalculator.sunInfo.azimuthSet.toString()
+
+        view?.findViewById<TextView>(R.id.morning_time)?.text =
+            getAstroDateTimeText(astroCalculator.sunInfo.twilightMorning)
+        view?.findViewById<TextView>(R.id.evening_time)?.text =
+            getAstroDateTimeText(astroCalculator.sunInfo.twilightEvening)
     }
 
 
