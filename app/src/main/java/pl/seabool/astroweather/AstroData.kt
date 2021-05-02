@@ -21,13 +21,15 @@ class AstroData {
 
     private fun setLocation(
         latitude: Double,
-        longtitude: Double
+        longitude: Double
     ): AstroCalculator.Location {
-        return AstroCalculator.Location(latitude, longtitude)
+
+        return AstroCalculator.Location(latitude, longitude)
     }
 
-    fun updatePosition(latitude: Double, longtitude: Double) {
+    fun updatePosition(latitude: Double, longtitude: Double) : AstroCalculator{
         astroCalculator = AstroCalculator(setAstroDate(), setLocation(latitude, longtitude))
+        return astroCalculator
     }
 
     fun getAstroTimeText(adt: AstroDateTime): String {
@@ -49,7 +51,7 @@ class AstroData {
     }
 
     init {
-        astroCalculator = AstroCalculator(setAstroDate(), setLocation(51.759247, 19.455982))
+        astroCalculator = AstroCalculator(setAstroDate(), setLocation(0.0, 0.0))
     }
 
 

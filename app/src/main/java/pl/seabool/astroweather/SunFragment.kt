@@ -1,11 +1,13 @@
 package pl.seabool.astroweather
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.preference.PreferenceManager
 import com.astrocalculator.AstroCalculator
 
 class SunFragment : Fragment() {
@@ -23,10 +25,23 @@ class SunFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         astroData = AstroData()
-
         val astroCalculator = astroData.astroCalculator
-
         setDataToTextViews(astroCalculator)
+    }
+
+    override fun onResume() {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context /* Activity context */)
+        val latitude = sharedPreferences.getString("latitude_key", "0.0")!!.toDouble()
+        val longitude = sharedPreferences.getString("longitude_key", "0.0")!!.toDouble()
+        val interval = sharedPreferences.getString("interval_key", "300")!!.toInt()
+
+        Log.i("latitude", latitude.toString())
+        Log.i("latitude", longitude.toString())
+        Log.i("latitude", interval.toString())
+
+        astroData.updatePosition(latitude, longitude)
+        setDataToTextViews(astroData.astroCalculator)
+        super.onResume()
     }
 
     private fun setDataToTextViews(astroCalculator: AstroCalculator) {

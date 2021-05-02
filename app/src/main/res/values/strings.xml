@@ -51,5 +51,7 @@
     <string name="longitude">Longitude</string>
     <string name="refresh">Refresh</string>
     <string name="refreshing_time">Refreshing interval</string>
+    <string name="preferences">preferences</string>
+    <string name="latitude_key">latitude_key</string>
 
 </resources>
