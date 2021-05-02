@@ -4,10 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.preference.PreferenceManager
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 
@@ -26,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         val tabs = findViewById<TabLayout>(R.id.tabs)
         viewPager.adapter = adapter
         tabs.setupWithViewPager(viewPager)
+        updateLocation()
     }
 
     @Override
@@ -44,6 +47,19 @@ class MainActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onResume() {
+        updateLocation()
+        super.onResume()
+    }
+
+    private fun updateLocation(){
+        val location = findViewById<TextView>(R.id.location)
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val latitude = sharedPreferences.getString("latitude_key", "0.0")
+        val longitude = sharedPreferences.getString("longitude_key", "0.0")
+        location.text = getString(R.string.location_holder, latitude, longitude)
     }
 
     class ViewPagerAdapter(manager: FragmentManager) :

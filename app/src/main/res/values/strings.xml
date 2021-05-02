@@ -7,6 +7,7 @@
     <string name="day">Day: </string>
     <string name="percentage">Percentage: </string>
     <string name="date">Date: </string>
+    <string name="location_holder">%1$s / %2$s</string>
 
     <!-- Astro -->
     <string name="azimuth">Azimuth: </string>

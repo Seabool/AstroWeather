@@ -45,6 +45,10 @@ class AstroData {
         return "${azimuthFirst}°${azimuthSecond}'"
     }
 
+    fun getMoonAge() : Double{
+        return astroCalculator.moonInfo.age/365*29
+    }
+
     init {
         astroCalculator = AstroCalculator(setAstroDate(), setLocation(0.0, 0.0))
     }
