@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     class ViewPagerAdapter(manager: FragmentManager) :
-        FragmentPagerAdapter(manager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+            FragmentPagerAdapter(manager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         private val fragmentList: MutableList<Fragment> = ArrayList()
         private val titleList: MutableList<String> = ArrayList()

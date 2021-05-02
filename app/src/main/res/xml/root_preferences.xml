@@ -3,15 +3,15 @@
     <PreferenceCategory app:title="@string/location">
 
         <EditTextPreference
+            app:defaultValue="0.0"
             app:key="latitude_key"
             app:title="@string/latitude"
-            app:defaultValue="0.0"
             app:useSimpleSummaryProvider="true" />
 
         <EditTextPreference
+            app:defaultValue="0.0"
             app:key="longitude_key"
             app:title="@string/longitude"
-            app:defaultValue="0.0"
             app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>

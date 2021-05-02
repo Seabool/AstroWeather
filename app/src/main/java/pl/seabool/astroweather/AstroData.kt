@@ -3,6 +3,8 @@ package pl.seabool.astroweather
 import com.astrocalculator.AstroCalculator
 import com.astrocalculator.AstroDateTime
 import java.util.*
+import kotlin.math.abs
+import kotlin.math.roundToInt
 
 class AstroData {
     var astroCalculator: AstroCalculator
@@ -20,14 +22,14 @@ class AstroData {
     }
 
     private fun setLocation(
-        latitude: Double,
-        longitude: Double
+            latitude: Double,
+            longitude: Double
     ): AstroCalculator.Location {
 
         return AstroCalculator.Location(latitude, longitude)
     }
 
-    fun updatePosition(latitude: Double, longtitude: Double) : AstroCalculator{
+    fun updatePosition(latitude: Double, longtitude: Double): AstroCalculator {
         astroCalculator = AstroCalculator(setAstroDate(), setLocation(latitude, longtitude))
         return astroCalculator
     }
@@ -48,6 +50,18 @@ class AstroData {
         date.append(".")
         date.append(adt.year)
         return date.toString()
+    }
+
+    fun getAzimuthToString(azimuth: Double): String {
+        val azimuthFirst = azimuth.roundToInt()
+        val azimuthSecond = abs((String.format("%.2f", azimuth - azimuthFirst).toDouble() * 100).toInt())
+
+        val azimuthText = StringBuilder()
+        azimuthText.append(azimuthFirst)
+        azimuthText.append("°")
+        azimuthText.append(azimuthSecond)
+        azimuthText.append("'")
+        return azimuthText.toString()
     }
 
     init {
