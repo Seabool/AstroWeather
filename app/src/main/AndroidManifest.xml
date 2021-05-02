@@ -11,7 +11,7 @@
         android:theme="@style/Theme.AstroWeather">
         <activity
             android:name=".Settings"
-            android:label="@string/title_activity_settings" />
+            android:label="@string/settings" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

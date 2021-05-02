@@ -20,8 +20,6 @@ class Settings : AppCompatActivity() {
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-
-
         PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false)
     }
 

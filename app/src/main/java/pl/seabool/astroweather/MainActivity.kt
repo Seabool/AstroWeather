@@ -13,7 +13,7 @@ import com.google.android.material.tabs.TabLayout
 
 class MainActivity : AppCompatActivity() {
 
-    val adapter = ViewPagerAdapter(supportFragmentManager)
+    private val adapter = ViewPagerAdapter(supportFragmentManager)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +38,7 @@ class MainActivity : AppCompatActivity() {
     @Override
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.settings) {
-            val intent = Intent(this, Settings::class.java).apply {
-                //putExtra(EXTRA_MESSAGE, message)
-            }
+            val intent = Intent(this, Settings::class.java).apply {}
             startActivity(intent)
             return true
         }

@@ -1,5 +1,6 @@
 package pl.seabool.astroweather
 
+import androidx.preference.PreferenceManager
 import com.astrocalculator.AstroCalculator
 import com.astrocalculator.AstroDateTime
 import java.util.*
@@ -21,52 +22,30 @@ class AstroData {
         return AstroDateTime(year, month, day, hour, minute, second, 1, true)
     }
 
-    private fun setLocation(
-            latitude: Double,
-            longitude: Double
-    ): AstroCalculator.Location {
-
+    private fun setLocation(latitude: Double, longitude: Double): AstroCalculator.Location {
         return AstroCalculator.Location(latitude, longitude)
     }
 
-    fun updatePosition(latitude: Double, longtitude: Double): AstroCalculator {
-        astroCalculator = AstroCalculator(setAstroDate(), setLocation(latitude, longtitude))
+    fun updatePosition(latitude: Double, longitude: Double): AstroCalculator {
+        astroCalculator = AstroCalculator(setAstroDate(), setLocation(latitude, longitude))
         return astroCalculator
     }
 
     fun getAstroTimeText(adt: AstroDateTime): String {
-        val time = StringBuilder()
-        time.append(adt.hour)
-        time.append(":")
-        time.append(adt.minute)
-        return time.toString()
+        return "${adt.hour}:${adt.minute}"
     }
 
     fun getAstroDateText(adt: AstroDateTime): String {
-        val date = StringBuilder()
-        date.append(adt.day)
-        date.append(".")
-        date.append(adt.month)
-        date.append(".")
-        date.append(adt.year)
-        return date.toString()
+        return "${adt.day}.${adt.month}.${adt.year}"
     }
 
     fun getAzimuthToString(azimuth: Double): String {
         val azimuthFirst = azimuth.roundToInt()
         val azimuthSecond = abs((String.format("%.2f", azimuth - azimuthFirst).toDouble() * 100).toInt())
-
-        val azimuthText = StringBuilder()
-        azimuthText.append(azimuthFirst)
-        azimuthText.append("°")
-        azimuthText.append(azimuthSecond)
-        azimuthText.append("'")
-        return azimuthText.toString()
+        return "${azimuthFirst}°${azimuthSecond}'"
     }
 
     init {
         astroCalculator = AstroCalculator(setAstroDate(), setLocation(0.0, 0.0))
     }
-
-
 }
