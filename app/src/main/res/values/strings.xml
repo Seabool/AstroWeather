@@ -10,6 +10,8 @@
     <string name="location_holder">%1$s / %2$s</string>
 
     <!-- Astro -->
+    <string name="sun">Sun</string>
+    <string name="moon">Moon</string>
     <string name="azimuth">Azimuth: </string>
     <string name="civil_dawn">Civil dawn</string>
     <string name="morning">Morning: </string>
@@ -34,6 +36,12 @@
     <string name="refresh">Refresh</string>
     <string name="refreshing_time">Refreshing interval</string>
     <string name="preferences">preferences</string>
+
+    <string name="default_decimal">0.0</string>
     <string name="latitude_key">latitude_key</string>
+    <string name="longitude_key">longitude_key</string>
+    <string name="interval_key">interval_key</string>
+
+    <string name="default_interval">300</string>
 
 </resources>

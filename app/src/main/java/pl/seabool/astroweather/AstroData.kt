@@ -1,9 +1,7 @@
 package pl.seabool.astroweather
 
-import androidx.preference.PreferenceManager
 import com.astrocalculator.AstroCalculator
 import com.astrocalculator.AstroDateTime
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -46,8 +44,8 @@ class AstroData {
         return "${azimuthFirst}°${azimuthSecond}'"
     }
 
-    fun getMoonAge() : Double{
-        return astroCalculator.moonInfo.age/365*29
+    fun getMoonAge(): Double {
+        return astroCalculator.moonInfo.age / 365 * 29
     }
 
     init {

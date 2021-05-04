@@ -3,14 +3,14 @@
     <PreferenceCategory app:title="@string/location">
 
         <EditTextPreference
-            app:defaultValue="0.0"
-            app:key="latitude_key"
+            app:defaultValue="@string/default_decimal"
+            app:key="@string/latitude_key"
             app:title="@string/latitude"
             app:useSimpleSummaryProvider="true" />
 
         <EditTextPreference
-            app:defaultValue="0.0"
-            app:key="longitude_key"
+            app:defaultValue="@string/default_decimal"
+            app:key="@string/longitude_key"
             app:title="@string/longitude"
             app:useSimpleSummaryProvider="true" />
 
@@ -19,10 +19,10 @@
     <PreferenceCategory app:title="@string/refresh">
 
         <ListPreference
-            app:defaultValue="300"
+            app:defaultValue="@string/default_interval"
             app:entries="@array/time_entries"
             app:entryValues="@array/time_values"
-            app:key="interval_key"
+            app:key="@string/interval_key"
             app:title="@string/refreshing_time"
             app:useSimpleSummaryProvider="true" />
 

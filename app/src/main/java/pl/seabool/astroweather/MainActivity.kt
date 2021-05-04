@@ -20,10 +20,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        adapter.addFragment(SunFragment(), "Sun")
-        adapter.addFragment(MoonFragment(), "Moon")
-
+        adapter.addFragment(SunFragment(), getString(R.string.sun))
+        adapter.addFragment(MoonFragment(), getString(R.string.moon))
         val viewPager = findViewById<ViewPager>(R.id.viewPager)
         val tabs = findViewById<TabLayout>(R.id.tabs)
         viewPager.adapter = adapter
@@ -54,11 +52,11 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
     }
 
-    private fun updateLocation(){
+    private fun updateLocation() {
         val location = findViewById<TextView>(R.id.location)
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val latitude = sharedPreferences.getString("latitude_key", "0.0")
-        val longitude = sharedPreferences.getString("longitude_key", "0.0")
+        val latitude = sharedPreferences.getString(getString(R.string.latitude_key), getString(R.string.default_decimal))
+        val longitude = sharedPreferences.getString(getString(R.string.longitude_key), getString(R.string.default_decimal))
         location.text = getString(R.string.location_holder, latitude, longitude)
     }
 

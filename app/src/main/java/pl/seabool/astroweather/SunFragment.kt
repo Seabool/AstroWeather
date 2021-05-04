@@ -2,7 +2,6 @@ package pl.seabool.astroweather
 
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,7 @@ import com.astrocalculator.AstroCalculator
 class SunFragment : Fragment() {
 
     private lateinit var astroData: AstroData
-    private var handler: Handler? = Handler()
+    private var handler: Handler? = Handler() //TODO: Handler is deprecated
     private var handlerTask: Runnable? = null
 
     override fun onCreateView(
@@ -51,18 +50,20 @@ class SunFragment : Fragment() {
         view?.findViewById<TextView>(R.id.evening_time)?.text =
                 astroData.getAstroTimeText(astroCalculator.sunInfo.twilightEvening)
     }
+
     //TODO: try to move it to AstroData
     private fun updateFromPreferences() {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val latitude = sharedPreferences.getString("latitude_key", "0.0")!!.toDouble()
-        val longitude = sharedPreferences.getString("longitude_key", "0.0")!!.toDouble()
-        val interval = sharedPreferences.getString("interval_key", "5")!!.toLong()
+        val latitude = sharedPreferences.getString(getString(R.string.latitude_key), getString(R.string.default_decimal))!!.toDouble()
+        val longitude = sharedPreferences.getString(getString(R.string.longitude_key), getString(R.string.default_decimal))!!.toDouble()
+        val interval = sharedPreferences.getString(getString(R.string.interval_key), getString(R.string.default_interval))!!.toLong()
         astroData.updatePosition(latitude, longitude)
         setDataToTextViews(astroData.astroCalculator)
         refreshView(interval)
     }
+
     //TODO: try to move it to AstroData
-    private fun refreshView(seconds : Long){
+    private fun refreshView(seconds: Long) {
         handlerTask?.let { handler!!.removeCallbacks(it) }
         handlerTask = Runnable {
             setDataToTextViews(astroData.astroCalculator)

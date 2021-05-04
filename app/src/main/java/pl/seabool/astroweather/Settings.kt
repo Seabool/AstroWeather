@@ -38,9 +38,8 @@ class Settings : AppCompatActivity() {
     class SettingsFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
-
-            val latitude = preferenceManager.findPreference<EditTextPreference>("latitude_key")
-            val longitude = preferenceManager.findPreference<EditTextPreference>("longitude_key")
+            val latitude = preferenceManager.findPreference<EditTextPreference>(getString(R.string.latitude_key))
+            val longitude = preferenceManager.findPreference<EditTextPreference>(getString(R.string.longitude_key))
             latitude!!.setOnBindEditTextListener { editText -> editText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_SIGNED or InputType.TYPE_NUMBER_FLAG_DECIMAL }
             longitude!!.setOnBindEditTextListener { editText -> editText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_SIGNED or InputType.TYPE_NUMBER_FLAG_DECIMAL }
         }
