@@ -3,6 +3,7 @@ package pl.seabool.astroweather
 import androidx.preference.PreferenceManager
 import com.astrocalculator.AstroCalculator
 import com.astrocalculator.AstroDateTime
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -32,7 +33,7 @@ class AstroData {
     }
 
     fun getAstroTimeText(adt: AstroDateTime): String {
-        return "${adt.hour}:${adt.minute}"
+        return String.format("%02d:%02d", adt.hour, adt.minute)
     }
 
     fun getAstroDateText(adt: AstroDateTime): String {
@@ -41,7 +42,7 @@ class AstroData {
 
     fun getAzimuthToString(azimuth: Double): String {
         val azimuthFirst = azimuth.roundToInt()
-        val azimuthSecond = abs((String.format("%.2f", azimuth - azimuthFirst).toDouble() * 100).toInt())
+        val azimuthSecond = abs((String.format("%.02f", azimuth - azimuthFirst).toDouble() * 100).toInt())
         return "${azimuthFirst}°${azimuthSecond}'"
     }
 
