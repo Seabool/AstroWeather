@@ -8,6 +8,7 @@ import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 
+
 class Settings : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,6 +22,7 @@ class Settings : AppCompatActivity() {
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false)
+
     }
 
     @Override
@@ -32,9 +34,15 @@ class Settings : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+
     class SettingsFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
+
+            val latitude = preferenceManager.findPreference<EditTextPreference>("latitude_key")
+            val longitude = preferenceManager.findPreference<EditTextPreference>("longitude_key")
+            latitude!!.setOnBindEditTextListener { editText -> editText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_SIGNED or InputType.TYPE_NUMBER_FLAG_DECIMAL }
+            longitude!!.setOnBindEditTextListener { editText -> editText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_SIGNED or InputType.TYPE_NUMBER_FLAG_DECIMAL }
         }
     }
 }
