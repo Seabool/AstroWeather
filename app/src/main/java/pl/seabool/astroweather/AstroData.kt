@@ -40,7 +40,8 @@ class AstroData {
 
     fun getAzimuthToString(azimuth: Double): String {
         val azimuthFirst = azimuth.roundToInt()
-        val azimuthSecond = abs((String.format("%.02f", azimuth - azimuthFirst).toDouble() * 100).toInt())
+        val azimuthSecond =
+            abs((String.format("%.02f", azimuth - azimuthFirst).toDouble() * 100).toInt())
         return "${azimuthFirst}°${azimuthSecond}'"
     }
 

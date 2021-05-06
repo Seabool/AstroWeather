@@ -8,6 +8,7 @@
     <string name="percentage">Percentage: </string>
     <string name="date">Date: </string>
     <string name="location_holder">%1$s / %2$s</string>
+    <string name="bad_input_toast">You\'ve entered bad number!</string>
 
     <!-- Astro -->
     <string name="sun">Sun</string>

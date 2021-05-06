@@ -2,6 +2,7 @@ package pl.seabool.astroweather
 
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,12 +14,12 @@ import com.astrocalculator.AstroCalculator
 class SunFragment : Fragment() {
 
     private lateinit var astroData: AstroData
-    private var handler: Handler? = Handler() //TODO: Handler is deprecated
+    private var handler: Handler? = Handler(Looper.getMainLooper())
     private var handlerTask: Runnable? = null
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_sun, container, false)
     }
@@ -36,27 +37,36 @@ class SunFragment : Fragment() {
 
     private fun setDataToTextViews(astroCalculator: AstroCalculator) {
         view?.findViewById<TextView>(R.id.sunrise_time)?.text =
-                astroData.getAstroTimeText(astroCalculator.sunInfo.sunrise)
+            astroData.getAstroTimeText(astroCalculator.sunInfo.sunrise)
         view?.findViewById<TextView>(R.id.sunrise_azimuth)?.text =
-                astroData.getAzimuthToString(astroCalculator.sunInfo.azimuthRise)
+            astroData.getAzimuthToString(astroCalculator.sunInfo.azimuthRise)
 
         view?.findViewById<TextView>(R.id.sunset_time)?.text =
-                astroData.getAstroTimeText(astroCalculator.sunInfo.sunset)
+            astroData.getAstroTimeText(astroCalculator.sunInfo.sunset)
         view?.findViewById<TextView>(R.id.sunset_azimuth)?.text =
-                astroData.getAzimuthToString(astroCalculator.sunInfo.azimuthSet)
+            astroData.getAzimuthToString(astroCalculator.sunInfo.azimuthSet)
 
         view?.findViewById<TextView>(R.id.morning_time)?.text =
-                astroData.getAstroTimeText(astroCalculator.sunInfo.twilightMorning)
+            astroData.getAstroTimeText(astroCalculator.sunInfo.twilightMorning)
         view?.findViewById<TextView>(R.id.evening_time)?.text =
-                astroData.getAstroTimeText(astroCalculator.sunInfo.twilightEvening)
+            astroData.getAstroTimeText(astroCalculator.sunInfo.twilightEvening)
     }
 
     //TODO: try to move it to AstroData
     private fun updateFromPreferences() {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val latitude = sharedPreferences.getString(getString(R.string.latitude_key), getString(R.string.default_decimal))!!.toDouble()
-        val longitude = sharedPreferences.getString(getString(R.string.longitude_key), getString(R.string.default_decimal))!!.toDouble()
-        val interval = sharedPreferences.getString(getString(R.string.interval_key), getString(R.string.default_interval))!!.toLong()
+        val latitude = sharedPreferences.getString(
+            getString(R.string.latitude_key),
+            getString(R.string.default_decimal)
+        )!!.toDouble()
+        val longitude = sharedPreferences.getString(
+            getString(R.string.longitude_key),
+            getString(R.string.default_decimal)
+        )!!.toDouble()
+        val interval = sharedPreferences.getString(
+            getString(R.string.interval_key),
+            getString(R.string.default_interval)
+        )!!.toLong()
         astroData.updatePosition(latitude, longitude)
         setDataToTextViews(astroData.astroCalculator)
         refreshView(interval)
