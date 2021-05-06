@@ -56,13 +56,13 @@ class Settings : AppCompatActivity() {
                 longitude!!.setOnBindEditTextListener { editText -> editText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_SIGNED or InputType.TYPE_NUMBER_FLAG_DECIMAL }
 
                 if (latitudePref != null) {
-                    if (latitudePref == "" || latitudePref == "0." || latitudePref.takeLast(1) == ".") {
+                    if (latitudePref == "" || latitudePref.takeLast(1) == ".") {
                         latitude?.text = getString(R.string.default_decimal)
                         Toast.makeText(activity, R.string.bad_input_toast, Toast.LENGTH_LONG).show()
                     }
                 }
-                if (latitudePref != null) {
-                    if (longitudePref == "" || latitudePref == "0." || latitudePref.takeLast(1) == ".") {
+                if (longitudePref != null) {
+                    if (longitudePref == "" || longitudePref.takeLast(1) == ".") {
                         longitude?.text = getString(R.string.default_decimal)
                         Toast.makeText(activity, R.string.bad_input_toast, Toast.LENGTH_LONG).show()
                     }
