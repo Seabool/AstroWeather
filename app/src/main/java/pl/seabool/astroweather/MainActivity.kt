@@ -1,38 +1,64 @@
 package pl.seabool.astroweather
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.AttributeSet
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentTransaction
 import androidx.preference.PreferenceManager
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 
-
 class MainActivity : AppCompatActivity() {
 
     private val adapter = ViewPagerAdapter(supportFragmentManager)
-    private var isTablet : Boolean = false
+    private lateinit var astroData: AstroData
+    private var handler: Handler? = Handler(Looper.getMainLooper())
+    private var handlerTask: Runnable? = null
+    private var sunFragment = SunFragment()
+    private var moonFragment = MoonFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        astroData = AstroData()
 
-        isTablet = resources.getBoolean(R.bool.isTablet)
+        if (savedInstanceState != null) {
+            sunFragment = supportFragmentManager.getFragment(
+                savedInstanceState,
+                getString(R.string.sun)
+            ) as SunFragment
+            moonFragment = supportFragmentManager.getFragment(
+                savedInstanceState,
+                getString(R.string.moon)
+            ) as MoonFragment
+        }
+
         updateLocation()
-        if (isTablet) {
-            addTabletFragments()
+        updateFragmentsData()
+
+        if (resources.getBoolean(R.bool.isTablet)) {
+            if (savedInstanceState == null) {
+                addTabletFragments()
+            }
         } else {
             addPhoneFragments()
         }
+    }
+
+    override fun onSaveInstanceState(savedInstanceState: Bundle) {
+        super.onSaveInstanceState(savedInstanceState)
+        supportFragmentManager.putFragment(savedInstanceState, getString(R.string.sun), sunFragment)
+        supportFragmentManager.putFragment(
+            savedInstanceState,
+            getString(R.string.moon),
+            moonFragment
+        )
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -47,13 +73,17 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             return true
         }
-
         return super.onOptionsItemSelected(item)
     }
 
     override fun onResume() {
-        updateLocation()
         super.onResume()
+        updateLocation()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        clearHandler()
     }
 
     private fun updateLocation() {
@@ -71,52 +101,64 @@ class MainActivity : AppCompatActivity() {
         if (latitude != null && longitude != null) {
             location.text = String.format("%.2f / %.2f", latitude.toDouble(), longitude.toDouble())
         }
+        val interval = sharedPreferences.getString(
+            getString(R.string.interval_key),
+            getString(R.string.default_interval)
+        )!!.toLong()
+
+        if (longitude != null && latitude != null) {
+            astroData.updatePosition(latitude.toDouble(), longitude.toDouble())
+        }
+        refreshEveryInterval(interval)
     }
 
     private fun addTabletFragments() {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        val fragmentSun = SunFragment()
-        val fragmentMoon = MoonFragment()
         for (fragment in supportFragmentManager.fragments) {
             supportFragmentManager.beginTransaction().remove(fragment).commit()
         }
-        fragmentTransaction.add(R.id.fragment_container, fragmentSun)
-        fragmentTransaction.add(R.id.fragment_container2, fragmentMoon)
+        fragmentTransaction.add(R.id.fragment_container, sunFragment, getString(R.string.sun))
+        fragmentTransaction.add(R.id.fragment_container2, moonFragment, getString(R.string.moon))
         fragmentTransaction.commit()
     }
 
     private fun addPhoneFragments() {
-        adapter.addFragment(SunFragment(), getString(R.string.sun))
-        adapter.addFragment(MoonFragment(), getString(R.string.moon))
+        adapter.addFragment(sunFragment, getString(R.string.sun))
+        adapter.addFragment(moonFragment, getString(R.string.moon))
         val viewPager = findViewById<ViewPager>(R.id.viewPager)
         val tabs = findViewById<TabLayout>(R.id.tabs)
         viewPager.adapter = adapter
         tabs.setupWithViewPager(viewPager)
     }
 
-    class ViewPagerAdapter(manager: FragmentManager) :
-        FragmentPagerAdapter(manager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-
-        private val fragmentList: MutableList<Fragment> = ArrayList()
-        private val titleList: MutableList<String> = ArrayList()
-
-        override fun getItem(position: Int): Fragment {
-            return fragmentList[position]
+    private fun refreshEveryInterval(seconds: Long) {
+        clearHandler()
+        handlerTask = Runnable {
+            Log.i("isRefreshing", "refresh")
+            updateExistingFragments()
+            handler!!.postDelayed(handlerTask!!, seconds * 1000)
         }
+        handlerTask!!.run()
+    }
 
-        override fun getCount(): Int {
-            return fragmentList.size
-        }
+    private fun updateFragmentsData() {
+        sunFragment.setAstroData(astroData)
+        moonFragment.setAstroData(astroData)
+    }
 
-        override fun getPageTitle(position: Int): CharSequence {
-            return titleList[position]
-        }
+    private fun clearHandler() {
+        handlerTask?.let { handler!!.removeCallbacks(it) }
+    }
 
-        fun addFragment(fragment: Fragment, title: String) {
-            fragmentList.add(fragment)
-            titleList.add(title)
+    private fun updateExistingFragments() {
+        updateFragmentsData()
+        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
+        for (fragment in supportFragmentManager.fragments) {
+            ft.detach(fragment)
+            ft.attach(fragment)
         }
+        ft.commit()
 
     }
 }

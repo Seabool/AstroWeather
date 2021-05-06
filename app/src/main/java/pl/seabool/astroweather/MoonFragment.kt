@@ -1,14 +1,11 @@
 package pl.seabool.astroweather
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.preference.PreferenceManager
 import com.astrocalculator.AstroCalculator
 import kotlin.math.round
 import kotlin.math.roundToInt
@@ -16,8 +13,6 @@ import kotlin.math.roundToInt
 class MoonFragment : Fragment() {
 
     private lateinit var astroData: AstroData
-    private var handler: Handler? = Handler(Looper.getMainLooper())
-    private var handlerTask: Runnable? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,16 +23,19 @@ class MoonFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        astroData = AstroData()
-        updateFromPreferences()
+        setDataToTextViews(astroData.astroCalculator)
     }
 
     override fun onResume() {
-        updateFromPreferences()
         super.onResume()
+        setDataToTextViews(astroData.astroCalculator)
     }
 
-    private fun setDataToTextViews(astroCalculator: AstroCalculator) {
+    fun setAstroData(astroData: AstroData) {
+        this.astroData = astroData
+    }
+
+    fun setDataToTextViews(astroCalculator: AstroCalculator) {
         view?.findViewById<TextView>(R.id.moonrise_time)?.text =
             astroData.getAstroTimeText(astroCalculator.moonInfo.moonrise)
         view?.findViewById<TextView>(R.id.moon_sunset_time)?.text =
@@ -51,36 +49,4 @@ class MoonFragment : Fragment() {
         view?.findViewById<TextView>(R.id.synodic_month_day)?.text =
             (round(astroData.getMoonAge() * 100.0) / 100.0).toString()
     }
-
-    //TODO: try to move it to AstroData
-    private fun updateFromPreferences() {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val latitude = sharedPreferences.getString(
-            getString(R.string.latitude_key),
-            getString(R.string.default_decimal)
-        )!!.toDouble()
-        val longitude = sharedPreferences.getString(
-            getString(R.string.longitude_key),
-            getString(R.string.default_decimal)
-        )!!.toDouble()
-        val interval = sharedPreferences.getString(
-            getString(R.string.interval_key),
-            getString(R.string.default_interval)
-        )!!.toLong()
-        astroData.updatePosition(latitude, longitude)
-        setDataToTextViews(astroData.astroCalculator)
-        refreshView(interval)
-    }
-
-    //TODO: try to move it to AstroData
-    private fun refreshView(seconds: Long) {
-        handlerTask?.let { handler!!.removeCallbacks(it) }
-        handlerTask = Runnable {
-            setDataToTextViews(astroData.astroCalculator)
-            handler!!.postDelayed(handlerTask!!, seconds * 1000)
-        }
-        handlerTask!!.run()
-    }
-
-
 }
