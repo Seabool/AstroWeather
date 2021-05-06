@@ -25,18 +25,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         isTablet = resources.getBoolean(R.bool.isTablet)
+        updateLocation()
         if (isTablet) {
             addTabletFragments()
         } else {
-            adapter.addFragment(SunFragment(), getString(R.string.sun))
-            adapter.addFragment(MoonFragment(), getString(R.string.moon))
-            val viewPager = findViewById<ViewPager>(R.id.viewPager)
-            val tabs = findViewById<TabLayout>(R.id.tabs)
-            viewPager.adapter = adapter
-            tabs.setupWithViewPager(viewPager)
+            addPhoneFragments()
         }
-        updateLocation()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -88,6 +84,15 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.add(R.id.fragment_container, fragmentSun)
         fragmentTransaction.add(R.id.fragment_container2, fragmentMoon)
         fragmentTransaction.commit()
+    }
+
+    private fun addPhoneFragments() {
+        adapter.addFragment(SunFragment(), getString(R.string.sun))
+        adapter.addFragment(MoonFragment(), getString(R.string.moon))
+        val viewPager = findViewById<ViewPager>(R.id.viewPager)
+        val tabs = findViewById<TabLayout>(R.id.tabs)
+        viewPager.adapter = adapter
+        tabs.setupWithViewPager(viewPager)
     }
 
     class ViewPagerAdapter(manager: FragmentManager) :
